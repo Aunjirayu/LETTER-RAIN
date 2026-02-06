@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Letter your</title>
+    <link rel="icon" type="image/png" href="letter.png">
+<style>
+body{
+  margin:0;
+  background:#fff1f5;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  font-family:"TH Sarabun New",sans-serif;
+}
+
+.card{
+  background:#f3ccff;
+  width:440px;
+  height:240px;
+  border-radius:32px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 30px;
+
+  /* เงาให้การ์ดดูฟุ้งและลอย */
+  box-shadow:
+    0 20px 40px rgba(180,90,220,0.35),
+    inset 0 0 0 2px rgba(255,255,255,0.6);
+}
+
+.card img{
+  width:250px;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.15));
+}
+
+.text{
+  text-align:center;
+   margin-right:30px;
+}
+
+.text h1{
+  margin:0;
+  font-size:40px;
+  font-weight:bold;
+}
+
+.text button{
+  margin-top:20px;
+  padding:10px 36px;
+  font-size:20px;
+
+  border-radius:14px;
+  border:2px solid #000;
+  background:#f7f7f7;
+  cursor:pointer;
+
+  box-shadow:0 4px 0 #000;
+  transition:0.2s;
+}
+
+.text button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 0 #000;
+}
+
+.text button:active{
+  transform:translateY(2px);
+  box-shadow:0 2px 0 #000;
+}
+
+</style>
+</head>
+<body>
+
+<div class="card">
+  <img src="kuromi4.png" alt="kuromi">
+  <div class="text">
+    <h1>Q&amp;A</h1>
+    <button onclick="startQA()">เริ่ม</button>
+  </div>
+</div>
+
+<script>
+function startQA(){
+  window.location.href = "qa.html";
+}
+</script>
+
+</body>
+</html>

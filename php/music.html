@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>For You </title>
+    <link rel="icon" type="image/png" href="letter.png">
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#fff1f5;
+  font-family:"TH Sarabun New", sans-serif;
+}
+
+/* การ์ด */
+.card{
+  width:820px;
+  height:440px;
+  background:#f7d9ff;
+  border-radius:28px;
+  position:relative;
+  box-shadow:0 18px 40px rgba(160,80,200,.35);
+}
+
+/* ===== โน้ต ===== */
+.note-wrap{
+  position:absolute;
+  left:80px;
+  top:90px;
+  transform:rotate(-8deg) scale(1);
+  transition:all .5s ease;
+  cursor:pointer;
+}
+
+/* ตอนขยาย */
+.note-wrap.active{
+  transform:rotate(0deg) scale(1.25);
+  z-index:10;
+}
+
+.note{
+  background:#fff7a8;
+  width:280px;
+  padding:22px;
+  border-radius:14px;
+  box-shadow:0 10px 20px rgba(0,0,0,.2);
+  position:relative;
+  transition:box-shadow .4s;
+}
+
+.note-wrap.active .note{
+  box-shadow:0 20px 40px rgba(0,0,0,.35);
+}
+
+/* เส้นบรรทัด */
+.lines{
+  font-size:22px;
+  line-height:1.6;
+  color:#888;
+}
+
+/* ข้อความ */
+.message{
+  display:none;
+  font-size:22px;
+  line-height:1.6;
+  color:#000;
+}
+
+/* ===== ดอกไม้ ===== */
+.flowers{
+  position:absolute;
+  width:200px;
+  bottom:-120px;
+  right:-85px;
+  transform:rotate(25deg);
+}
+
+.music{
+  position:absolute;
+  right:90px;
+  top:100px;
+}
+
+.vinyl-box{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.record{
+  width:160px;
+  height:160px;
+  border-radius:50%;
+  background:black;
+  position:relative;
+}
+
+.record::after{
+  content:"";
+  width:24px;
+  height:24px;
+  background:#ff6f9c;
+  border-radius:50%;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+}
+
+.player-controls{
+  margin-top:18px;
+  display:flex;
+  gap:18px;
+}
+
+.player-controls button{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:none;
+  background:white;
+  box-shadow:0 6px 15px rgba(0,0,0,.15);
+  font-size:18px;
+  cursor:pointer;
+}
+
+#heart.active{
+  color:hotpink;
+}
+/* แผ่นเสียง */
+.record{
+  width:160px;
+  height:160px;
+  background:black;
+  border-radius:50%;
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* คุโรมิ */
+.kuromi{
+  width:140px;
+  z-index:2;
+}
+
+/* หมุน */
+.playing{
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
+}
+.record.playing{
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin{
+  from{ transform: rotate(0deg); }
+  to{ transform: rotate(360deg); }
+}
+.record.playing .kuromi{
+  animation: bounce .6s ease-in-out infinite alternate;
+}
+
+@keyframes bounce{
+  from{ transform: scale(1) rotate(0deg); }
+  to{ transform: scale(1.05) rotate(3deg); }
+}
+#heart.active{
+  color: hotpink;
+  animation: pop .3s ease;
+}
+
+@keyframes pop{
+  0%{ transform: scale(1); }
+  50%{ transform: scale(1.4); }
+  100%{ transform: scale(1); }
+}
+.progress-wrap{
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #6b2d84;
+}
+
+.progress-bar{
+  width: 180px;
+  height: 6px;
+  background: #e6c8f5;
+  border-radius: 10px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.progress{
+  width: 0%;
+  height: 100%;
+  background: hotpink;
+  border-radius: 10px;
+}
+
+.next-page{
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+
+  background: white;
+  font-size: 22px;
+  cursor: pointer;
+
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  transition: 0.2s;
+}
+
+.next-page:hover{
+  transform: scale(1.1);
+  background: #ffe6f2;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <!-- โน้ต -->
+  <div class="note-wrap" id="note" onclick="toggleNote()">
+    <div class="note">
+
+      <div class="lines" id="lines">
+        ____________<br>
+        ____________<br>
+        ____________<br>
+        ____________
+      </div>
+
+      <div class="message" id="message">
+        ผมตั้งใจทำทุกหน้านี้<br>
+        เพราะคุณสำคัญกับผมจริง ๆ 💌
+      </div>
+
+      <img src="flower1.png" class="flowers">
+    </div>
+  </div>
+
+<!-- เพลง -->
+<div class="music">
+  <div class="vinyl-box">
+
+    <div class="record" id="record">
+      <img src="kuromi7.png" class="kuromi">
+    </div>
+
+    <div class="player-controls">
+      <button onclick="rewind()">⏮</button>
+      <button onclick="toggleMusic()" id="playBtn">▶</button>
+      <button onclick="forward()">⏭</button>
+      <button onclick="toggleHeart()" id="heart">♡</button>
+    </div>
+    <div class="progress-wrap">
+  <span id="currentTime">0:00</span>
+
+  <div class="progress-bar" onclick="seek(event)">
+    <div class="progress" id="progress"></div>
+  </div>
+
+  <span id="duration">0:00</span>
+</div>
+
+  </div>
+
+  <audio id="song" src="song1.mp3"></audio>
+  <audio id="song" src="song2.mp3"></audio>
+  <audio id="song" src="song3.mp3"></audio>
+</div>
+
+<button class="next-page" onclick="goNextPage()">➡</button>
+
+
+<script>
+let opened = false;
+
+function toggleNote(){
+  const note = document.getElementById("note");
+  const lines = document.getElementById("lines");
+  const message = document.getElementById("message");
+
+  if(!opened){
+    // เปิดโน้ต
+    note.classList.add("active");
+    lines.style.display = "none";
+    message.style.display = "block";
+    opened = true;
+  }else{
+    // ปิดโน้ต กลับเหมือนเดิม
+    note.classList.remove("active");
+    message.style.display = "none";
+    lines.style.display = "block";
+    opened = false;
+  }
+}
+
+
+function toggleMusic(){
+  if(song.paused){
+    song.play();
+    record.classList.add("playing"); // ⭐ สั่งให้หมุน
+  }else{
+    song.pause();
+    record.classList.remove("playing"); // ⭐ หยุดหมุน
+  }
+}
+
+const song = document.getElementById("song");
+const record = document.getElementById("record");
+const playBtn = document.getElementById("playBtn");
+const kuromiImg = document.getElementById("kuromi");
+
+const progressBar = document.querySelector(".progress-bar");
+const progress = document.getElementById("progress");
+const currentTimeEl = document.getElementById("currentTime");
+const durationEl = document.getElementById("duration");
+
+// 🎵 playlist + คุโรมิ
+const playlist = [
+  { src: "song1.mp3", kuromi: "kuromi7.png" },
+  { src: "song2.mp3", kuromi: "kuromi2.png" }, // ✅ เอาเว้นวรรคออก
+  { src: "song3.mp3", kuromi: "kuromi3.png" }
+];
+
+let currentSong = 0;
+
+/* ===== โหลดเพลง + เล่นทันที ===== */
+function loadSong(index){
+  song.pause();
+  song.currentTime = 0;
+
+  song.src = playlist[index].src;
+  kuromiImg.src = playlist[index].kuromi;
+
+  song.load();
+
+  song.play().then(() => {
+    record.classList.add("playing");
+    playBtn.innerHTML = "⏸";
+  }).catch(err => {
+    console.log("Play error:", err);
+  });
+}
+
+/* ▶ / ⏸ */
+function toggleMusic(){
+  if(song.paused){
+    song.play();
+    record.classList.add("playing");
+    playBtn.innerHTML = "⏸";
+  }else{
+    song.pause();
+    record.classList.remove("playing");
+    playBtn.innerHTML = "▶";
+  }
+}
+
+/* ⏭ เพลงถัดไป */
+function forward(){
+  currentSong = (currentSong + 1) % playlist.length;
+  loadSong(currentSong);
+}
+
+/* ⏮ เพลงก่อนหน้า */
+function rewind(){
+  currentSong = (currentSong - 1 + playlist.length) % playlist.length;
+  loadSong(currentSong);
+}
+
+/* เวลาเพลง */
+song.addEventListener("timeupdate", () => {
+  if(song.duration){
+    const percent = (song.currentTime / song.duration) * 100;
+    progress.style.width = percent + "%";
+    currentTimeEl.textContent = formatTime(song.currentTime);
+  }
+});
+
+song.addEventListener("loadedmetadata", () => {
+  durationEl.textContent = formatTime(song.duration);
+});
+
+/* คลิกเลื่อนเพลง */
+function seek(e){
+  const width = progressBar.clientWidth;
+  const clickX = e.offsetX;
+  song.currentTime = (clickX / width) * song.duration;
+}
+
+/* แปลงเวลา */
+function formatTime(sec){
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60).toString().padStart(2,"0");
+  return `${m}:${s}`;
+}
+
+/* เพลงจบ → เล่นเพลงถัดไปอัตโนมัติ */
+song.addEventListener("ended", forward);
+
+/* โหลดเพลงแรก */
+loadSong(currentSong);
+
+function goNextPage(){
+  window.location.href = "game.html"; // 👈 เปลี่ยนเป็นหน้าที่อยากไป
+}
+
+
+</script>
+
+
+</body>
+</html>

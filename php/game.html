@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>GAME</title>
+ <link rel="icon" type="image/png" href="letter.png">
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#fff0f5;
+  font-family:'Anuphan',sans-serif;
+}
+
+.card{
+  width:520px;        /* ⬅ กว้างขึ้น */
+  height:480px;       /* ⬅ สูงขึ้น */
+  background:#f6d9ff;
+  border-radius:30px; /* มนขึ้นนิดนึง */
+  text-align:center;
+  padding:30px;       /* เว้นขอบเพิ่ม */
+  box-sizing:border-box;
+}
+
+
+/* ===== GIF AREA ===== */
+.gif-box{
+  width:180px;
+  height:180px;
+  background:#ffffff;
+  border-radius:20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:15px auto 25px;
+  box-shadow:0 6px 15px rgba(0,0,0,0.12);
+}
+
+.gif{
+  max-width:140px;
+  max-height:140px;
+  object-fit:contain;
+}
+
+/* ==================== */
+
+.btn-area{
+  position:relative;
+  width:100%;
+  height:120px;
+}
+
+button{
+  position:absolute;
+  padding:14px 28px;
+  font-size:18px;
+  border:none;
+  border-radius:16px;
+  cursor:pointer;
+  transition:0.25s;
+}
+
+#loveBtn{
+  left:70px;
+  bottom:20px;
+  background:#38ff38;
+}
+
+#noLoveBtn{
+  right:70px;
+  bottom:20px;
+  background:#ff4040;
+}
+
+.heart{
+  position:fixed;
+  top:-30px;
+  animation:fall linear forwards;
+  pointer-events:none;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(110vh);
+    opacity:0;
+  }
+}
+h1{
+  font-weight:700;
+  letter-spacing:1px;
+}
+@keyframes shake {
+  0% { transform: translate(0,0) scale(var(--s)); }
+  25% { transform: translate(-4px,0) scale(var(--s)); }
+  50% { transform: translate(4px,0) scale(var(--s)); }
+  75% { transform: translate(-4px,0) scale(var(--s)); }
+  100% { transform: translate(0,0) scale(var(--s)); }
+}
+
+.shake {
+  animation: shake 0.25s infinite;
+}
+
+/* หัวใจลอย */
+.heart {
+  position: fixed;
+  top: -20px;
+  pointer-events: none;
+  animation-name: fall;
+  animation-timing-function: linear;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+.happy-text {
+  position: absolute;
+  top: 260px;              /* ใต้ GIF */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 28px;
+  font-weight: bold;
+  color: #ff4fa3;
+  opacity: 0;
+  animation: floatUp 2.5s ease-out forwards;
+  pointer-events: none;
+  text-shadow: 0 4px 10px rgba(255,79,163,0.4);
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -40px);
+  }
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+  <h1>รักเค้ามั้ย?</h1>
+
+  <!-- ⭐ กล่องใส่ GIF -->
+  <div class="gif-box">
+    <img src="cute1.gif" class="gif" id="gif">
+  </div>
+
+  <div class="btn-area" id="area">
+    <button id="loveBtn">รัก 💚</button>
+    <button id="noLoveBtn">ไม่รัก 💔</button>
+  </div>
+</div>
+
+<script>
+const gifs = ["cute5.gif","cute2.gif","cute3.gif","cute4.gif"];
+const happyGif = "cute6.gif";
+
+let gifIndex = 0;
+
+const noBtn = document.getElementById("noLoveBtn");
+const loveBtn = document.getElementById("loveBtn");
+const gifImg = document.getElementById("gif");
+const area = document.getElementById("area");
+
+let noCount = 0;
+let noScale = 1;
+let loveScale = 1;
+
+noBtn.style.setProperty("--s", 1);
+
+/* ❌ ปุ่มไม่รัก */
+noBtn.addEventListener("click", () => {
+  noCount++;
+
+  // เปลี่ยน GIF
+  gifIndex = (gifIndex + 1) % gifs.length;
+  gifImg.src = gifs[gifIndex];
+
+  // เล็กลง + สั่น
+  noScale -= 0.18;
+  noScale = Math.max(noScale, 0.3);
+  noBtn.style.setProperty("--s", noScale);
+  noBtn.classList.add("shake");
+
+  // ปุ่มรักใหญ่ขึ้น
+  loveScale = Math.min(loveScale + 0.15, 1.6);
+  loveBtn.style.transform = `scale(${loveScale})`;
+
+  // หลบแรงขึ้นเรื่อย ๆ
+  moveButton(100 + noCount * 40);
+
+  if(noCount >= 4){
+    noBtn.style.display = "none";
+  }
+});
+
+function moveButton(force){
+  const maxX = area.clientWidth - noBtn.offsetWidth;
+  const maxY = area.clientHeight - noBtn.offsetHeight;
+
+  let x = noBtn.offsetLeft + (Math.random()*force - force/2);
+  let y = noBtn.offsetTop  + (Math.random()*force - force/2);
+
+  x = Math.max(0, Math.min(x, maxX));
+  y = Math.max(0, Math.min(y, maxY));
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top  = y + "px";
+}
+
+/* 💚 ปุ่มรัก */
+loveBtn.addEventListener("click", () => {
+  gifImg.src = happyGif;
+
+  loveBtn.style.display = "none";
+  noBtn.style.display = "none";
+
+  startHearts();
+});
+
+/* 💖 หัวใจลอยลง */
+function startHearts(){
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = "💖";
+
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.fontSize = 16 + Math.random()*24 + "px";
+    heart.style.animationDuration = 2 + Math.random()*2 + "s";
+
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 4000);
+  }, 180);
+}
+</script>
+
+
+</body>
+</html>

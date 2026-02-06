@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Q&A </title>
+    <link rel="icon" type="image/png" href="letter.png">
+
+
+<style>
+body{
+  margin:0;
+  background:#fff1f5;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  font-family:"TH Sarabun New", sans-serif;
+}
+
+.box{
+  width:380px;
+  background:#f6d9ff;
+  border-radius:28px;
+  padding:25px;
+  box-shadow:0 18px 35px rgba(170,120,200,.45);
+  text-align:center;
+}
+
+h2{
+  margin-top:0;
+  font-size:32px;
+}
+
+.question{
+  font-size:22px;
+  margin:20px 0 10px;
+}
+
+.answers button{
+  display:block;
+  width:100%;
+  margin:8px 0;
+  padding:10px;
+  font-size:20px;
+  border-radius:14px;
+  border:2px solid #000;
+  background:#fff;
+  cursor:pointer;
+}
+
+.answers button:hover{
+  background:#ffe6f2;
+}
+
+.hidden{
+  display:none;
+}
+
+#result{
+  font-size:22px;
+  margin-top:20px;
+}
+
+#nextBtn{
+  margin-top:20px;
+  padding:10px 30px;
+  font-size:20px;
+  border-radius:14px;
+  border:2px solid #000;
+  background:#fff;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+  <h2>ตอบคำถามเกี่ยวกับผมหน่อยนะ 💭</h2>
+
+  <div id="q1">
+    <div class="question">1) ผมชอบสีอะไร?</div>
+    <div class="answers">
+      <button onclick="answer(1, true)">ชมพู</button>
+      <button onclick="answer(1, false)">ฟ้า</button>
+    </div>
+  </div>
+
+  <div id="q2" class="hidden">
+    <div class="question">2) ผมเป็นคนแบบไหน?</div>
+    <div class="answers">
+      <button onclick="answer(2, true)">ขี้เล่น แต่จริงใจ</button>
+      <button onclick="answer(2, false)">เงียบ ๆ ไม่ค่อยพูด</button>
+    </div>
+  </div>
+
+  <div id="q3" class="hidden">
+    <div class="question">3) ผมตั้งใจทำเว็บนี้เพื่ออะไร?</div>
+    <div class="answers">
+      <button onclick="answer(3, true)">เพราะคุณคนพิเศษ</button>
+      <button onclick="answer(3, false)">แค่ลองเขียนเล่น</button>
+    </div>
+  </div>
+
+  <div id="result" class="hidden"></div>
+  <button id="nextBtn" class="hidden" onclick="goNext()">ไปต่อ 🎧</button>
+
+</div>
+
+<script>
+let score = 0;
+
+function answer(q, correct){
+  if(correct) score++;
+
+  document.getElementById("q"+q).classList.add("hidden");
+
+  if(q < 3){
+    document.getElementById("q"+(q+1)).classList.remove("hidden");
+  }else{
+    showResult();
+  }
+}
+
+function showResult(){
+  const result = document.getElementById("result");
+  result.classList.remove("hidden");
+
+  if(score === 3){
+    result.innerHTML = "คุณดูใส่ใจผมดีจริง ๆ นะ 💖";
+  }else{
+    result.innerHTML = "ไม่เป็นไรเลย แค่นี้ผมก็ดีใจแล้วนะ 😊";
+  }
+
+  setTimeout(()=>{
+    document.getElementById("nextBtn").classList.remove("hidden");
+  }, 2000);
+}
+
+function goNext(){
+  window.location.href = "music.html";
+}
+</script>
+
+</body>
+</html>
